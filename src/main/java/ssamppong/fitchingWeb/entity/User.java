@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(exclude = {"bodyParts"})
 @ToString(exclude = {"bodyParts"})
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
