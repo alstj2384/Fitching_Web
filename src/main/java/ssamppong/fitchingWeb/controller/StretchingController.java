@@ -18,8 +18,8 @@ public class StretchingController {
 
     private final StretchingService stretchingService;
 
-    @GetMapping("/parts")
-    public ResponseEntity<?> getPartsByUser(@RequestParam long userId) {//반환타입 제네릭 와일드카드(다야한 타입의 응답 본문을 반환)
+    @GetMapping("/parts/{userId}")
+    public ResponseEntity<?> getPartsByUser(@PathVariable long userId) {//반환타입 제네릭 와일드카드(다야한 타입의 응답 본문을 반환)
         try {
             UserPartsDTO userParts = stretchingService.getPartsByUser(userId);
             return ResponseEntity.status(HttpStatus.OK).body(userParts);

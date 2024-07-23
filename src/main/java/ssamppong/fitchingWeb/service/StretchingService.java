@@ -29,7 +29,7 @@ public class StretchingService {
                 .collect(Collectors.toList());
 
         return UserPartsDTO.builder()
-                .id(user.getUserId())
+                .userId(user.getUserId())
                 .parts(parts)
                 .build();
     }
