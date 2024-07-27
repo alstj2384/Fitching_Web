@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ssamppong.fitchingWeb.dto.StretchingRequestDto;
+import ssamppong.fitchingWeb.dto.StretchingResponseDto;
 import ssamppong.fitchingWeb.dto.UserPartsDTO;
 import ssamppong.fitchingWeb.service.StretchingService;
 
@@ -28,4 +31,20 @@ public class StretchingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User ID not found: " + userId);
         }
     }
+
+    @PostMapping("/check")
+    public ResponseEntity<?> stretchingCheck(@RequestBody StretchingRequestDto requestDto, BindingResult result){
+        if (result.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
+        }
+        try {
+            StretchingResponseDto responseDto = stretchingService.completeStretching(requestDto);
+            return ResponseEntity.ok(responseDto);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("에러");
+        }
+
+
+    }
+
 }
