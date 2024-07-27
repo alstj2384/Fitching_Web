@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserPartsDTO {
-    private int userId;
+    private Long userId;
     private List<PartDTO> parts;
 
 }

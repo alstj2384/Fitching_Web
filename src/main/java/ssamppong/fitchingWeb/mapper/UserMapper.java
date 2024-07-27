@@ -13,6 +13,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .level(user.getLevel())
                 .currentPoints(user.getCurrentPoints())
+                .tiar(user.getTier())
                 .build();
     }
 

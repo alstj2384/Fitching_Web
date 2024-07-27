@@ -20,5 +20,7 @@ public class UserDto {
 
     private int currentPoints;
 
+    private String tiar;
+
 
 }

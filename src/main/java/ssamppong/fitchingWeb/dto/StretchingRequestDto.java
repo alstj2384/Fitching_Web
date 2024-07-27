@@ -14,6 +14,7 @@ public class StretchingRequestDto {
 
     private Long userId;
 
-    private Long partId;
+  //  private Long partId;
 
+    private String partName;
 }
