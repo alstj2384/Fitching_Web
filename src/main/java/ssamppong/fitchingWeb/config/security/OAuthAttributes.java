@@ -1,4 +1,4 @@
-package ssamppong.fitchingWeb.config;
+package ssamppong.fitchingWeb.config.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +13,12 @@ import java.util.Map;
 public class OAuthAttributes {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
+    private String providerId;
     private String name;
     private String email;
 
     public static OAuthAttributes of(String registrationId,
-                                     String userNameAttributeName,
+                                     String userNameAttributeName, // 회원 구분 PK
                                      Map<String, Object> attributes){
         return ofGoogle(userNameAttributeName, attributes);
     }
@@ -29,6 +30,7 @@ public class OAuthAttributes {
                 .email((String) attributes.get("email"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
+                .providerId((String)attributes.get("sub"))
                 .build();
     }
 
@@ -37,6 +39,7 @@ public class OAuthAttributes {
                 .name(name)
                 .role("USER")
                 .email(email)
+                .providerId(providerId)
                 .build();
     }
 }

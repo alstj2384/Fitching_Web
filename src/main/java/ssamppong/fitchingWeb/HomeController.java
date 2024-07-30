@@ -3,10 +3,11 @@ package ssamppong.fitchingWeb;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ssamppong.fitchingWeb.config.SessionUser;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,13 +18,13 @@ public class HomeController {
 
     // 메인 화면 - 게시판 목록
     @GetMapping("/")
-    public String postList(Model model) {
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if (user != null) {
-            log.info(user.getName() + " fewfew");
-            model.addAttribute("userName", user.getName());
+    public String postList(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails != null) {
+            model.addAttribute("userName", userDetails.getUsername());
         }
         return "list";
     }
+
+
 
 }
