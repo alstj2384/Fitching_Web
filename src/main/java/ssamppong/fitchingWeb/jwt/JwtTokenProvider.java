@@ -3,6 +3,8 @@ package ssamppong.fitchingWeb.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import ssamppong.fitchingWeb.config.security.CustomUserDetailService;
 
 import java.security.Key;
@@ -39,6 +42,7 @@ public class JwtTokenProvider {
         long now = (new Date()).getTime();
 
         Date accessTokenExpiresIn = new Date(now + 1000 * 60 * 30);
+//        Date accessTokenExpiresIn = new Date(now + 1000 * 15);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -58,7 +62,16 @@ public class JwtTokenProvider {
                 .build();
     }
 
+    public static String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")){
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
     public Authentication getAuthentication(String accessToken){
+
         Claims claims = parseClaims(accessToken);
 
         if(claims.get("auth") == null){
@@ -73,26 +86,6 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 
-    public boolean validateToken(String token){
-        try{
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (SecurityException | MalformedJwtException e){
-            log.info("Invalid JWT Token", e);
-        } catch (ExpiredJwtException e){
-            log.info("Expired JWT Token", e);
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
-        } catch (io.jsonwebtoken.security.SignatureException e){
-            log.info("JWT signature dose not match locally computed signature.");
-        }
-        return false;
-    }
 
     private Claims parseClaims(String accessToken) {
         try {
@@ -104,5 +97,10 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public boolean validateToken(String token) {
+        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return true;
     }
 }

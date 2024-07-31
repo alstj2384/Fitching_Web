@@ -1,5 +1,8 @@
 package ssamppong.fitchingWeb.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,11 +36,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = resolveToken((HttpServletRequest) request);
+        log.info("JWT 토큰 검증");
 
-        if(token != null && jwtTokenProvider.validateToken(token)){
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try{
+            if(token != null && jwtTokenProvider.validateToken(token)){
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (SecurityException | MalformedJwtException e) {
+            request.setAttribute("exception", ErrorCode.WRONG_TYPE_TOKEN.getCode());
+            log.info("{}", ErrorCode.WRONG_TYPE_TOKEN);
+        } catch (ExpiredJwtException e) {
+            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
+            log.info("{}", ErrorCode.EXPIRED_TOKEN);
+        } catch (UnsupportedJwtException e) {
+            request.setAttribute("exception", ErrorCode.UNSUPPORTED_TOKEN.getCode());
+            log.info("{}", ErrorCode.UNSUPPORTED_TOKEN);
+        } catch (Exception e) {
+            request.setAttribute("exception", ErrorCode.UNKNOWN_ERROR.getCode());
+            log.info("{}", ErrorCode.UNKNOWN_ERROR);
         }
+
         filterChain.doFilter(request, response);
     }
 }
