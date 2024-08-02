@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class StretchingRequestDto {
 
-    private Long userId;
+    private int userId;
 
   //  private Long partId;
 

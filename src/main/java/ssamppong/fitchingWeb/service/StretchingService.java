@@ -41,7 +41,7 @@ public class StretchingService {
 //                .parts(parts)
 //                .build();
 //    }
-    public UserPartsDTO getPartsByUser(long userId) {
+    public UserPartsDTO getPartsByUser(int userId) {
         Optional<User> userOpt = userRepository.findById(userId);
         if (!userOpt.isPresent()) {
             throw new RuntimeException("User not found");

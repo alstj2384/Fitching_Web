@@ -1,4 +1,9 @@
 spring:
+  application:
+    name: fitchingWeb
+
+  profiles:
+    include: oauth, jwt
   h2:
     console:
       enabled: true
@@ -9,12 +14,20 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+    hikari:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:~/test
+      username: sa
+      password:
 
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    defer-datasource-initialization: true
 
   sql:
     init:
-      mode: never
+      mode: always
+
+
+
