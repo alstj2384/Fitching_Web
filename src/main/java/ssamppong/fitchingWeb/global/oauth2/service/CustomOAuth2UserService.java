@@ -1,4 +1,4 @@
-package ssamppong.fitchingWeb.config.security;
+package ssamppong.fitchingWeb.global.oauth2.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import ssamppong.fitchingWeb.entity.User;
+import ssamppong.fitchingWeb.global.oauth2.OAuthAttributes;
+import ssamppong.fitchingWeb.global.oauth2.PrincipalDetails;
 import ssamppong.fitchingWeb.repository.UserRepository;
 
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package ssamppong.fitchingWeb.config.security;
+package ssamppong.fitchingWeb.global.oauth2;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

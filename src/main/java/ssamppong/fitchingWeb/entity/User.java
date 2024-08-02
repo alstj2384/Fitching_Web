@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
@@ -23,18 +24,38 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+
     @Column(unique = true)
     private String email;
     private String name;
+    private String role;
+
+    // level
+    @Column(name = "member_level")
     private int level;
     private int currentPoints;
+
+    // 일반 로그인
+    private String password;
+
+    // oauth
     private String providerId;
-    private String role;
+
+    // jwt
+    private String refreshToken;
 
     public User update(String name){
         this.name = name;
 
         return this;
+    }
+
+    public void passwordEncode(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(this.password);
+    }
+
+    public void updateRefreshToken(String updateRefreshToken){
+        this.refreshToken = updateRefreshToken;
     }
 
 
