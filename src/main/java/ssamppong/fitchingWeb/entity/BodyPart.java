@@ -16,6 +16,7 @@ public class BodyPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int partId;
+
     private String partName;
     private int count;
 
