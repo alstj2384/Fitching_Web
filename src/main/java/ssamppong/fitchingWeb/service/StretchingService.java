@@ -155,10 +155,10 @@ public class StretchingService {
             user.setTier("Gold");
         } else if (completedStretchings >= 5) {
             user.setLevel(1);
-            user.setTier("Bronze");
+            user.setTier("Sliver");
         } else if (completedStretchings >= 3) {
             user.setLevel(0);
-            user.setTier("Silver");
+            user.setTier("Bronze");
         }
     }
 }
