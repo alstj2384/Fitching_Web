@@ -6,3 +6,4 @@ jwt:
   refresh:
     expiration: 1209600000 # 2주일 (1000 * 60 * 60 * 24 * 14)
     header: Authorization-refresh
+  secret: bfdbe79af22f4678a5135a36467eacc575a3723c6f26c33c22a0d5e46461f3470de391bf8983ff031eb31ddd1ecc1d3a0b9d1bc11f73e701367edaf21cfcb4c5

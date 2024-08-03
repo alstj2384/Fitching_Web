@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  fitchingweb:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Spring Boot 애플리케이션 Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/fitchingdb
+      SPRING_DATASOURCE_USERNAME: fitchingmaster
+      SPRING_DATASOURCE_PASSWORD: 12341234!
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.mariadb.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MariaDBDialect
+    depends_on:
+      - db
+  db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12341234!
+      MYSQL_DATABASE: fitchingdb
+      MYSQL_USER: fitchingmaster
+      MYSQL_PASSWORD: 12341234!
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - fitchingweb
+
+volumes:
+  db-data:
