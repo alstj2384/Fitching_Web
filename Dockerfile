@@ -3,9 +3,10 @@ FROM openjdk:17-slim
 
 # Install required packages
 RUN apt-get update && apt-get install -y build-essential curl
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x ./wait-for-it.sh
 
 # Add wait-for-it script
-COPY wait-for-it.sh /wait-for-it.sh
 
 # Set JAVA_HOME environment variable
 ENV JAVA_HOME /usr/local/openjdk-17
