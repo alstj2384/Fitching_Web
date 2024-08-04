@@ -44,12 +44,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrfConfig -> csrfConfig.disable())
+                .cors(cors -> cors
+                        .configurationSource(CorsConfig.corsConfiguration()))
                 .headers(headerConfig -> headerConfig.
                         frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequest) -> authorizeRequest
                         .requestMatchers("/stretching/**").hasRole("USER")
-                        .requestMatchers("/", "/css/**", "images/**", "/js/**", "/login/*", "/logout/*", "/h2-console/**", "/auth/success", "/user/sign-up", "/login","/swagger-ui/**","/hello","/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/", "/css/**", "images/**", "/js/**", "/login/*", "/logout/*", "/h2-console/**", "/auth/success", "/user/sign-up", "/login").permitAll()
                         .requestMatchers("/user/{user_id}").hasRole("USER")
                         .anyRequest().authenticated()
                 )
