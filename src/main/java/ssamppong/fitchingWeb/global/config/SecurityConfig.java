@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequest) -> authorizeRequest
                         .requestMatchers("/stretching/**").hasRole("USER")
-                        .requestMatchers("/", "/css/**", "images/**", "/js/**", "/login/*", "/logout/*", "/h2-console/**", "/auth/success", "/user/sign-up", "/login").permitAll()
+                        .requestMatchers("/", "/css/**", "images/**", "/js/**", "/login/*", "/logout/*", "/h2-console/**", "/auth/success", "/user/sign-up", "/login","/swagger-ui/**","/hello","/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/user/{user_id}").hasRole("USER")
                         .anyRequest().authenticated()
                 )

@@ -24,4 +24,10 @@ public class BodyPart {
     @JoinColumn(name = "user_id")
     @JsonBackReference //양뱡향 관계 무한루프 해결
     private User user;
+
+    public BodyPart(String partName, int count, User user) {
+        this.partName = partName;
+        this.count = count;
+        this.user = user;
+    }
 }

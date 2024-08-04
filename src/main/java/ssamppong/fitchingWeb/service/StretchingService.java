@@ -112,12 +112,16 @@ public class StretchingService {
         }
 
         User user = userOpt.get();
+
+        BodyPart bodyPart = null;
         Optional<BodyPart> bodyPartOpt = bodyPartRepository.findByUserAndPartName(user, request.getPartName());
         if (!bodyPartOpt.isPresent()) {
-            throw new RuntimeException("BodyPart not found");
-        }
 
-        BodyPart bodyPart = bodyPartOpt.get();
+            //todo 바디생성정보가 없으면 위 내용을 바탕으로 엔티티 레코드 1개 생성
+            bodyPart = bodyPartRepository.save(new BodyPart(request.getPartName(), 0, user));
+        } else{
+            bodyPart = bodyPartOpt.get();
+        }
 
         // BodyPart의 count 값을 증가시킴
         bodyPart.setCount(bodyPart.getCount() + 1);
