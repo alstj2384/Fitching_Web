@@ -16,7 +16,6 @@ import ssamppong.fitchingWeb.global.login.service.CustomUserDetailService;
 import ssamppong.fitchingWeb.entity.User;
 import ssamppong.fitchingWeb.repository.UserRepository;
 
-import java.io.IOException;
 import java.security.Key;
 import java.util.Date;
 import java.util.Optional;
@@ -50,12 +49,15 @@ public class JwtService {
 
     private final UserRepository userRepository;
     private final CustomUserDetailService customUserDetailService;
+    private final ResponseUtil responseUtil;
 
-    public JwtService(@Value("${jwt.secret}")String secretKey, UserRepository userRepository, CustomUserDetailService customUserDetailService) {
+    public JwtService(@Value("${jwt.secret}")String secretKey, UserRepository userRepository
+            , CustomUserDetailService customUserDetailService, ResponseUtil responseUtil) {
         byte[] decode = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(decode);
         this.userRepository = userRepository;
         this.customUserDetailService = customUserDetailService;
+        this.responseUtil = responseUtil;
     }
 
 
@@ -110,7 +112,7 @@ public class JwtService {
 
     public void setFailureMessage(HttpServletResponse response) {
         try{
-            ResponseUtil.setResponse(response, ErrorCode.EXPIRED_TOKEN);
+            responseUtil.setFailureResponse(response, ErrorCode.EXPIRED_TOKEN);
         } catch(Exception e){
             log.info("{}", e);
         }

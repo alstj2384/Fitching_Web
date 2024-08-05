@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void signUp(UserSignUpDto userSignUpDto) throws Exception {
+    public User signUp(UserSignUpDto userSignUpDto) throws Exception {
         if (userRepository.findByEmail(userSignUpDto.getEmail()).isPresent()) {
             throw new Exception("이미 존재하는 이메일입니다");
         }
@@ -34,8 +34,12 @@ public class UserService {
                 .build();
 
         user.passwordEncode(passwordEncoder);
-        userRepository.save(user);
+        User save = userRepository.save(user);
+        return save;
+    }
 
+    public User save(User user){
+        return userRepository.save(user);
     }
 
     public UserDto findById(int id) {

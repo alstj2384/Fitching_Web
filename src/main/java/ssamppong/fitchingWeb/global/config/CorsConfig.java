@@ -15,17 +15,17 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         ArrayList<String> allowedOriginPatterns = new ArrayList<>();
-        allowedOriginPatterns.add("http://localhost:8080");
-        allowedOriginPatterns.add("http://localhost:5173");
+        allowedOriginPatterns.add("*");
 
-        corsConfiguration.setAllowedOrigins(allowedOriginPatterns);
+        corsConfiguration.setAllowedOriginPatterns(allowedOriginPatterns);
 
-        ArrayList<String> allowedmethods = new ArrayList<>();
-        allowedmethods.add("GET");
-        allowedmethods.add("POST");
-        allowedmethods.add("PUT");
-        allowedmethods.add("DELETE");
-        corsConfiguration.setAllowedOrigins(allowedmethods);
+
+        ArrayList<String> allowedMethods = new ArrayList<>();
+        allowedMethods.add("GET");
+        allowedMethods.add("POST");
+        allowedMethods.add("PUT");
+        allowedMethods.add("DELETE");
+        corsConfiguration.setAllowedMethods(allowedMethods);
 
         corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
 

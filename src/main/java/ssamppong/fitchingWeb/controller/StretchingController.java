@@ -53,7 +53,14 @@ public class StretchingController {
     }
 
     @PostMapping("/check")
-    public ResponseEntity<?> stretchingCheck(@RequestBody StretchingRequestDto requestDto, BindingResult result){
+    public ResponseEntity<?> stretchingCheck(@RequestBody StretchingRequestDto requestDto, @AuthenticationPrincipal UserDetails userDetails,
+                                             BindingResult result){
+
+        User findUser = userService.findByEmail(userDetails.getUsername());
+
+        if(findUser.getUserId() != requestDto.getUserId()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("요청 정보가 일치하지 않습니다: " + findUser.getUserId());
+        }
         if (result.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
         }

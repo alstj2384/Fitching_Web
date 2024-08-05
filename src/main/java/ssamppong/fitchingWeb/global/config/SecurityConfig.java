@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import ssamppong.fitchingWeb.global.ResponseUtil;
 import ssamppong.fitchingWeb.global.exception.CustomAccessDeniedHandler;
 import ssamppong.fitchingWeb.global.exception.CustomAuthenticationEntryPoint;
 import ssamppong.fitchingWeb.global.jwt.filter.JwtAuthenticationFilter;
@@ -36,9 +37,12 @@ public class SecurityConfig {
     private final CustomUserDetailService customUserDetailService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
+//    private final LoginSuccessHandler loginSuccessHandler;
+//    private final LoginFailureHandler loginFailureHandler;
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final JwtService jwtService;
+    private final ResponseUtil responseUtil;
 
     private final String[] swaggerPath = {"/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/error"};
 
@@ -69,9 +73,8 @@ public class SecurityConfig {
                         .failureHandler(oAuth2FailureHandler)
                 )
                 .exceptionHandling(e -> e
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                        .accessDeniedHandler(new CustomAccessDeniedHandler()))
-                ;
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint(responseUtil))
+                        .accessDeniedHandler(new CustomAccessDeniedHandler(responseUtil)));
 
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
@@ -107,7 +110,7 @@ public class SecurityConfig {
      */
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
-        return new LoginSuccessHandler(jwtService, userRepository);
+        return new LoginSuccessHandler(jwtService, userRepository, objectMapper, responseUtil);
     }
 
     /**
