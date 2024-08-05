@@ -30,8 +30,6 @@ public class User {
     private String name;
     private String role;
 
-    // level
-    @Column(name = "member_level")
     private int level;
     private int currentPoints;
 
