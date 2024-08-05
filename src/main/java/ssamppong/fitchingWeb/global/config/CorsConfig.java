@@ -16,6 +16,8 @@ public class CorsConfig {
 
         ArrayList<String> allowedOriginPatterns = new ArrayList<>();
         allowedOriginPatterns.add("http://localhost:8080");
+        allowedOriginPatterns.add("http://localhost:5173");
+
         corsConfiguration.setAllowedOrigins(allowedOriginPatterns);
 
         ArrayList<String> allowedmethods = new ArrayList<>();
@@ -28,6 +30,7 @@ public class CorsConfig {
         corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
 
         corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(Collections.singletonList("Authorization")); // 예: Authorization 헤더
 
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);

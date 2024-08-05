@@ -40,6 +40,8 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final JwtService jwtService;
 
+    private final String[] swaggerPath = {"/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/error"};
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -51,6 +53,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequest) -> authorizeRequest
                         .requestMatchers("/stretching/**").hasRole("USER")
+                        .requestMatchers(swaggerPath).permitAll()
                         .requestMatchers("/", "/css/**", "images/**", "/js/**", "/login/*", "/logout/*", "/h2-console/**", "/auth/success", "/user/sign-up", "/login").permitAll()
                         .requestMatchers("/user/{user_id}").hasRole("USER")
                         .anyRequest().authenticated()
