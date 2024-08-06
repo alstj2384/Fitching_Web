@@ -58,7 +58,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequest) -> authorizeRequest
                         .requestMatchers("/stretching/**").hasRole("USER")
                         .requestMatchers(swaggerPath).permitAll()
-                        .requestMatchers("/", "/css/**", "images/**", "/js/**", "/login/*", "/logout/*", "/h2-console/**", "/auth/success", "/user/sign-up", "/login").permitAll()
+                        .requestMatchers("/", "/css/**", "images/**", "/js/**", "/login/*", "/logout/*", "/h2-console/**", "/auth/success", "user/sign-up", "/login").permitAll()
                         .requestMatchers("/user/{user_id}").hasRole("USER")
                         .anyRequest().authenticated()
                 )
